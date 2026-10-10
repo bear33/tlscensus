@@ -9,7 +9,7 @@ import (
 	"github.com/gopacket/gopacket"
 	"github.com/gopacket/gopacket/layers"
 
-	"github.com/connectedinformation/tlscensus/internal/assemble"
+	"github.com/bear33/tlscensus/internal/assemble"
 )
 
 // pktgen builds Ethernet/IPv4/TCP packets in memory, so a test can express a

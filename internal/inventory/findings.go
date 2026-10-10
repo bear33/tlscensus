@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/connectedinformation/tlscensus/internal/assemble"
-	"github.com/connectedinformation/tlscensus/internal/tlsparse"
+	"github.com/bear33/tlscensus/internal/assemble"
+	"github.com/bear33/tlscensus/internal/tlsparse"
 )
 
 // Finding identifiers. Stable strings: reports, filters and any downstream

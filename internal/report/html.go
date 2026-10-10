@@ -7,7 +7,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/connectedinformation/tlscensus/internal/inventory"
+	"github.com/bear33/tlscensus/internal/inventory"
 )
 
 //go:embed report.html.tmpl

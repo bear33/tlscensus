@@ -46,10 +46,10 @@ sboms:
 homebrew_casks:
   - name: tlscensus
     repository:
-      owner: connectedinformation
+      owner: bear33
       name: homebrew-tap
       token: '{{ .Env.HOMEBREW_TAP_TOKEN }}'
-    homepage: https://github.com/connectedinformation/tlscensus
+    homepage: https://github.com/bear33/tlscensus
     description: Passive TLS cryptography inventory
     license: Apache-2.0
     binaries:
@@ -77,12 +77,12 @@ homebrew_casks:
 
       To capture without running the whole tool as root, put yourself in the
       access_bpf group as Wireshark does. See:
-      https://github.com/connectedinformation/tlscensus/blob/main/docs/permissions.md
+      https://github.com/bear33/tlscensus/blob/main/docs/permissions.md
 
 nfpms:
   - formats: [deb, rpm]
     maintainer: The tlscensus Authors
-    homepage: https://github.com/connectedinformation/tlscensus
+    homepage: https://github.com/bear33/tlscensus
     description: Passive TLS cryptography inventory
     license: Apache-2.0
     contents:
