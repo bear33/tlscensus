@@ -12,10 +12,10 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/connectedinformation/tlscensus/internal/assemble"
-	"github.com/connectedinformation/tlscensus/internal/capture"
-	"github.com/connectedinformation/tlscensus/internal/inventory"
-	"github.com/connectedinformation/tlscensus/internal/report"
+	"github.com/bear33/tlscensus/internal/assemble"
+	"github.com/bear33/tlscensus/internal/capture"
+	"github.com/bear33/tlscensus/internal/inventory"
+	"github.com/bear33/tlscensus/internal/report"
 )
 
 // flushInterval is how often idle streams are swept during live capture.

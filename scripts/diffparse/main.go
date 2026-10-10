@@ -19,8 +19,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/connectedinformation/tlscensus/internal/assemble"
-	"github.com/connectedinformation/tlscensus/internal/capture"
+	"github.com/bear33/tlscensus/internal/assemble"
+	"github.com/bear33/tlscensus/internal/capture"
 )
 
 // isGREASE is RFC 8701, written out independently of internal/tlsparse.

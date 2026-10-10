@@ -78,8 +78,8 @@ clears it.
 **Any platform — verified download**
 
 ```sh
-curl -fsSLO https://github.com/connectedinformation/tlscensus/releases/latest/download/checksums.txt
-curl -fsSLO https://github.com/connectedinformation/tlscensus/releases/latest/download/tlscensus_Linux_x86_64.tar.gz
+curl -fsSLO https://github.com/bear33/tlscensus/releases/latest/download/checksums.txt
+curl -fsSLO https://github.com/bear33/tlscensus/releases/latest/download/tlscensus_Linux_x86_64.tar.gz
 sha256sum --ignore-missing -c checksums.txt
 tar xzf tlscensus_*.tar.gz && sudo install tlscensus /usr/local/bin/
 ```
@@ -99,7 +99,7 @@ step done yourself.
 **From source**
 
 ```sh
-go install github.com/connectedinformation/tlscensus/cmd/tlscensus@latest
+go install github.com/bear33/tlscensus/cmd/tlscensus@latest
 ```
 
 ## Use
@@ -249,11 +249,11 @@ a short read.
 
 ## Who makes this
 
-tlscensus is built and maintained by **Connected Information**, which also
-makes commercial TLS tooling. It is open source because a tool that runs as
-root and reads every hostname a machine contacts should be one you can audit
-before you trust it — and because the reports that make it correct come from
-people running it on networks we do not have.
+tlscensus is built and maintained by Bear Hsiung
+([@bear33](https://github.com/bear33)). It is open source because a tool
+that runs as root and reads every hostname a machine contacts should be one
+you can audit before you trust it — and because the reports that make it
+correct come from people running it on networks I do not have.
 
 It has no telemetry, makes no network connections of its own, and is
 Apache-2.0 licensed. Those are checkable claims, not assurances.
