@@ -289,11 +289,37 @@ corpus covers TLS 1.2 and 1.3, present and absent SNI — including the `i`
 branch that a connection without SNI takes — several ALPN values, narrow
 signature-algorithm lists, and post-quantum key shares.
 
-Two details remain unexercised and are marked in the source:
+Two details remain unexercised by real traffic:
 
 - an ALPN value whose first or last byte is not alphanumeric, where the
-  spec substitutes a hex encoding. No client in the corpus sent one.
+  spec substitutes a hex encoding. This is implemented, and
+  `TestJA4ALPN` checks it against the eight examples in the spec's own
+  ALPN section, but no client in the corpus has sent such a value, so
+  Wireshark has not confirmed it.
 - DTLS, which the record layer does not decode at all.
+
+#### GREASE in signature algorithms: Wireshark 4.6.4 disagrees with the spec
+
+Chrome 154 puts a GREASE value first in `signature_algorithms`, with a
+fresh random value per connection. The JA4 spec says to ignore GREASE
+"anywhere it sees them", and FoxIO's reference implementation filters it
+from signature algorithms. tlscensus does the same. **Wireshark 4.6.4 keeps
+it in the hash**, so for such a ClientHello the last JA4 component differs
+from Wireshark's, and Wireshark's value changes on every connection.
+`TestJA4IgnoresGREASESignatureAlgorithms` pins the spec behaviour.
+
+Found 2026-10-10 by comparing tlscensus's JA4 with tshark 4.6.4 on
+ClientHellos captured over loopback from eight clients (captures not
+committed, per CONTRIBUTING): Go 1.25 net/http; curl 8.15, Python 3.14,
+Node 22 `https` and `fetch`, and `openssl s_client`, all on OpenSSL 3.5.4;
+Firefox 150; and Chrome 154. Seven matched exactly. Chrome differed only in
+that last component, and only because of the GREASE value.
+
+Not yet checked against Wireshark 4.6.8, the version the differential run
+above used. Chrome versions in that corpus evidently did not send a GREASE
+signature algorithm. If a re-run with Chrome 154 or later reports a JA4
+mismatch on the last component, check for this before changing the parser:
+it is the oracle accusing correct code again.
 
 **JA4S is not validated.** Wireshark emits `tls.handshake.ja4` for the
 client but the harness does not yet compare a server fingerprint, so the
@@ -357,7 +383,8 @@ agrees with broken code.
 | Distinct client fingerprints | 15 JA4 values |
 | **HelloRetryRequest** | **no** |
 | **ECH** | **no** (synthetic only) |
-| **Non-alphanumeric ALPN** | **no** |
+| **Non-alphanumeric ALPN** | **no** (unit-tested against the spec's examples) |
+| GREASE in `signature_algorithms` (Chrome 154+) | **no** in the pcap corpus; see the Wireshark 4.6.4 note above |
 | **DTLS, QUIC** | **no** (not implemented) |
 
 HelloRetryRequest is the significant gap. `openssl s_client -groups

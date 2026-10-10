@@ -23,10 +23,15 @@ import (
 // post-quantum key shares. All 47 agree. Re-check with
 // scripts/differential.sh after touching this file.
 //
-// Two details remain unexercised, both marked at their sites: an ALPN value
-// whose first or last byte is not alphanumeric, and DTLS. No client in the
-// corpus produced either, so they are implemented-but-unverified rather
-// than known-good.
+// Two details remain unexercised by that corpus: an ALPN value whose first
+// or last byte is not alphanumeric (implemented and unit-tested against the
+// spec's own examples, but no client produced one), and DTLS (not decoded).
+//
+// GREASE is dropped from every list, signature algorithms included, as the
+// spec and FoxIO's reference implementation do. Wireshark 4.6.4 keeps a
+// GREASE signature algorithm in the hash, so for a client that sends one
+// (Chrome 154 does) the two disagree on the last component; see
+// docs/validation.md before treating that as a bug here.
 
 // JA4 returns the JA4 client fingerprint, in the form
 // "t13d1516h2_8daaf6152771_b186095e22b6".
@@ -129,16 +134,23 @@ func ja4ALPN(alpn []string) string {
 }
 
 // ja4ALPNOne encodes the first and last byte of an ALPN value: "h2" stays
-// "h2", "http/1.1" becomes "h1".
+// "h2", "http/1.1" becomes "h1". When either byte is not an ASCII
+// alphanumeric, the spec takes the first and last characters of the value's
+// hex encoding instead, so 0xab 0xcd becomes "ad".
 func ja4ALPNOne(v string) string {
 	if v == "" {
 		return "00"
 	}
 	first, last := v[0], v[len(v)-1]
-	// TODO: the spec substitutes a hex encoding when either byte is not
-	// alphanumeric. Until that is validated, such values are passed through
-	// as-is, which is wrong but at least visibly so.
+	if !isASCIIAlnum(first) || !isASCIIAlnum(last) {
+		h := hex.EncodeToString([]byte(v))
+		first, last = h[0], h[len(h)-1]
+	}
 	return string([]byte{first, last})
+}
+
+func isASCIIAlnum(c byte) bool {
+	return c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z'
 }
 
 func cap99(n int) int {
