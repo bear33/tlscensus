@@ -38,10 +38,13 @@ const (
 	ExtKeyShare                uint16 = 51
 	ExtQUICTransportParams     uint16 = 57
 	ExtNextProtocolNegotiation uint16 = 13172
-	ExtApplicationSettings     uint16 = 17513
-	ExtApplicationSettingsOld  uint16 = 17613
-	ExtEncryptedClientHello    uint16 = 0xfe0d
-	ExtRenegotiationInfo       uint16 = 0xff01
+	// ALPS has no IANA codepoint. BoringSSL moved it from 17513 to 17613
+	// (include/openssl/tls1.h: application_settings_old / application_settings);
+	// Chrome 154 sends 17613.
+	ExtApplicationSettings    uint16 = 17613
+	ExtApplicationSettingsOld uint16 = 17513
+	ExtEncryptedClientHello   uint16 = 0xfe0d
+	ExtRenegotiationInfo      uint16 = 0xff01
 )
 
 var extensionNames = map[uint16]string{
